@@ -1,0 +1,46 @@
+#!/bin/bash
+
+############
+TMP_FOLDERS="/home/mrdexter/git-repos/.tmp/*"
+############
+
+# Custom .tmp cleaner
+
+echo "=> Starting temp files and cache cleanup..."
+echo "=> Cleaning yay & pacman cache (yay -Scc)..."
+
+yay -Scc
+
+echo "=> Done..."
+echo "=> Cleaning .tmp folders designated by user..."
+
+CHOICE=""
+
+while [[ -z $CHOICE ]]; do
+  read -r -n 1 -p "===> Are you sure you want to delete $TMP_FOLDERS (Y/n)?" USER_INPUT
+
+  USER_INPUT=${USER_INPUT,,}
+
+  if [[ -z "$USER_INPUT" ]]; then
+    CHOICE="n"
+  elif [[ "$USER_INPUT" == "y" ]]; then
+    CHOICE="y"
+  elif [[ "$USER_INPUT" == "n" ]]; then
+    CHOICE="n"
+  else
+    echo "Sorry. Please try again..."
+  fi
+
+done
+
+echo
+
+if [[ "$CHOICE" == "y" ]]; then
+  echo "=> Deleting $TMP_FOLDERS"
+  rm -rf $TMP_FOLDERS
+else
+  echo "=> Aborted"
+fi
+
+echo "=> Done..."
+echo "===> Operation sucessful! :)"
